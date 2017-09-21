@@ -6,6 +6,11 @@
     input {
       margin-right: 30px;
     }
+
+    input[type="number"] {
+      width: 5em;
+      font-size: 1.3em;
+    }
   </style>
 </head>
 <body>
@@ -13,16 +18,19 @@
 
   <p>
     <label for="shapeRadius">Radius</label>
-    <input type="text" value="100" id="shapeRadius" size="10">
+    <input type="number" value="100" id="shapeRadius" size="10">
+
+    <label for="numLayers">Recursion Level</label>
+    <input type="number" value="2" id="numLayers" size="10">
 
     <label for="numShapes">Number of Shapes</label>
-    <input type="text" value="10" id="numShapes" size="10">
-
-    <label for="numSides">Number of Sides</label>
-    <input type="text" value="5" id="numSides" size="10">
+    <input type="number" value="10" id="numShapes" size="10">
 
     <label for="circles">Circles</label>
     <input type="checkbox" value="circles" id="circles">
+
+    <label for="numSides">Number of Sides</label>
+    <input type="number" value="5" id="numSides" size="10">
   </p>
   <canvas id="canvas" height="1000" width="1000"></canvas>
 
