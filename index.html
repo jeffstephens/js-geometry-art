@@ -2,17 +2,22 @@
 <html>
 <head>
   <title>Jeff's Canvas Drawings</title>
+  <style type="text/css">
+    input {
+      margin-right: 30px;
+    }
+  </style>
 </head>
 <body>
   <p>
     <label for="shapeRadius">Radius</label>
-    <input type="text" value="100" id="shapeRadius">
+    <input type="text" value="100" id="shapeRadius" size="10">
 
     <label for="numShapes">Number of Shapes</label>
-    <input type="text" value="10" id="numShapes">
+    <input type="text" value="10" id="numShapes" size="10">
 
     <label for="numSides">Number of Sides</label>
-    <input type="text" value="5" id="numSides">
+    <input type="text" value="5" id="numSides" size="10">
   </p>
   <canvas id="canvas" height="1000" width="1000"></canvas>
 
