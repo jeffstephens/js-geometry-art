@@ -62,7 +62,7 @@ function drawEllipse(centerX, centerY, radiusX, radiusY) {
   ctx.stroke();
 }
 
-function renderShapes(shapeRadius, numShapes, numSides) {
+function renderShapes(shapeRadius, numShapes, numSides, circles = false) {
   // clear canvas for new drawing
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -78,6 +78,10 @@ function renderShapes(shapeRadius, numShapes, numSides) {
 
     // ctx.fillRect(polygonPoint[0], polygonPoint[1], 2, 2);
 
-    drawPolygon(polygonPoint[0], polygonPoint[1], shapeRadius, numSides);
+    if (circles) {
+      drawEllipse(polygonPoint[0], polygonPoint[1], shapeRadius, shapeRadius);
+    } else {
+      drawPolygon(polygonPoint[0], polygonPoint[1], shapeRadius, numSides);
+    }
   }
 }

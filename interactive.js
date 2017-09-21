@@ -7,8 +7,9 @@ function render() {
   const shapeRadius = $("#shapeRadius").val();
   const numShapes = $("#numShapes").val();
   const numSides = $("#numSides").val();
+  const circles = $("#circles").is(":checked");
 
-  renderShapes(shapeRadius, numShapes, numSides);
+  renderShapes(shapeRadius, numShapes, numSides, circles);
 }
 
 $("input").change(() => {
