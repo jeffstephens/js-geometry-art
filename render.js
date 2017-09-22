@@ -79,8 +79,8 @@ function drawPolygon(centerX, centerY, radius, numSides, level) {
 
   ctx.closePath();
 
-  ctx.fillStyle = getColor(level);
-  ctx.fill();
+  // ctx.fillStyle = getColor(level);
+  // ctx.fill();
 
   ctx.stroke();
 }
@@ -209,6 +209,9 @@ function renderShapes(numLayers, shapeCenter, shapeRadius, numShapes, numSides, 
   // calculate center points for each polygon
   const centerPoint = shapeCenter;
   const polygonCenters = calculateSurroundingCenterPoints(centerPoint, shapeRadius, numShapes, numLayers);
+
+  // also draw center shape
+  // polygonCenters.push(centerPoint);
 
   // draw a polygon at each center point
   for(let i = 0; i < polygonCenters.length; i++) {
