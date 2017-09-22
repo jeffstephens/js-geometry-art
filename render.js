@@ -63,9 +63,9 @@ function drawEllipse(centerX, centerY, radiusX, radiusY) {
 }
 
 function doRender(numLayers, shapeRadius, numShapes, numSides, circles = false) {
-  // resize canvas to match window height
-  ctx.canvas.width = window.innerWidth;
-  ctx.canvas.height = window.innerHeight;
+  // resize canvas to match shape size
+  ctx.canvas.width = shapeRadius * 4;
+  ctx.canvas.height = shapeRadius * 4;
 
   // clear canvas for new drawing
   ctx.clearRect(0, 0, canvas.width, canvas.height);

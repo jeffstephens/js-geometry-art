@@ -4,7 +4,7 @@
 
 const renderStateKey = 'geomRenderState';
 
-function render() {  
+function render() {
   // parameters for the whole deal
   const renderState = {
     shapeRadius: $("#shapeRadius").val(),
@@ -52,15 +52,25 @@ function restoreState() {
   }
 }
 
-$("input").change(() => {
-  render();
-});
-
-$("input").keyup(() => {
-  render();
-});
+function downloadImage(link, canvasId, filename) {
+  const encodedImage = document.getElementById(canvasId).toDataURL();
+  link.href = encodedImage;
+  link.download = filename;
+}
 
 $(document).ready(() => {
+  $("input").change(() => {
+    render();
+  });
+
+  $("input").keyup(() => {
+    render();
+  });
+
+  document.getElementById('downloadImage').addEventListener('click', function() {
+    downloadImage(this, 'canvas', 'geometry.png');
+  }, false);
+
   restoreState();
   render();
 });
