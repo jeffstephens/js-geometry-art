@@ -4,7 +4,7 @@
 
 const renderStateKey = 'geomRenderState';
 
-function render() {
+function render() {  
   // parameters for the whole deal
   const renderState = {
     shapeRadius: $("#shapeRadius").val(),
