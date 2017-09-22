@@ -41,8 +41,27 @@ function calculateSurroundingCenterPoints(center, polygonRadius, numPolygons, mu
   return surroundingPoints;
 }
 
+function getColor(seed) {
+  // const colors = [
+  //   '#AA6C39',
+  //   '#AA8439',
+  //   '#2E4272',
+  //   '#226666'
+  // ];
+
+  const colors = [
+    '#000000',
+    '#D2E59E',
+    '#DE0D92',
+    '#7C7A7A',
+    '#FF5D73'
+  ];
+
+  return colors[parseInt(seed) % colors.length];
+}
+
 // construct a shape by drawing lines between numSides points
-function drawPolygon(centerX, centerY, radius, numSides) {
+function drawPolygon(centerX, centerY, radius, numSides, level) {
   ctx.fillStyle = 'black';
   ctx.beginPath();
 
@@ -57,13 +76,24 @@ function drawPolygon(centerX, centerY, radius, numSides) {
 
   // finish the shape by connecting back to the origin
   ctx.lineTo(shapeAnchorPoints[0][0], shapeAnchorPoints[0][1]);
+
+  ctx.closePath();
+
+  ctx.fillStyle = getColor(level);
+  ctx.fill();
+
   ctx.stroke();
 }
 
-function drawEllipse(centerX, centerY, radiusX, radiusY) {
+function drawEllipse(centerX, centerY, radiusX, radiusY, level) {
   ctx.fillStyle = 'black';
   ctx.beginPath();
   ctx.ellipse(centerX, centerY, radiusX, radiusY, 45 * Math.PI/180, 0, 2 * Math.PI);
+  ctx.closePath();
+
+  // ctx.fillStyle = getColor(level);
+  // ctx.fill();
+
   ctx.stroke();
 }
 
@@ -188,9 +218,9 @@ function renderShapes(numLayers, shapeCenter, shapeRadius, numShapes, numSides, 
     // ctx.fillRect(polygonPoint[0], polygonPoint[1], 2, 2);
 
     if (circles) {
-      drawEllipse(polygonPoint[0], polygonPoint[1], shapeRadius, shapeRadius);
+      drawEllipse(polygonPoint[0], polygonPoint[1], shapeRadius, shapeRadius, numLayers);
     } else {
-      drawPolygon(polygonPoint[0], polygonPoint[1], shapeRadius, numSides);
+      drawPolygon(polygonPoint[0], polygonPoint[1], shapeRadius, numSides, numLayers);
     }
 
     // calculate next recursive generation
