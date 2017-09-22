@@ -25,7 +25,7 @@ body {
   padding: 10px;
 }
 
-a#downloadImage {
+a.button {
   text-transform: uppercase;
   background: #333;
   color: #FFF;
@@ -33,9 +33,12 @@ a#downloadImage {
   margin: 0 15px 0 5px;
   cursor: pointer;
   border: 1px solid #333;
+  text-decoration: none;
+  font-family: sans-serif;
+  font-size: 0.9em;
 }
 
-a#downloadImage:hover, a#downloadImage:focus {
+a.button:hover, a.button:focus {
   border: 1px solid #FFF;
   background: #444;
 }

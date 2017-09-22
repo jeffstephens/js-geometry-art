@@ -6,7 +6,8 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 // start at 12:00 for easier human visualization
-const radialOffset = (-1 * Math.PI/2);
+let radialOffset = (-1 * Math.PI/2);
+let doRadialOffset = false;
 
 // The parametric equation for a circle is
 // x = cx + r * cos(a)
@@ -21,15 +22,19 @@ function getCircleY(cy, r, a) {
   return cy + r * Math.sin(a);
 }
 
-function calculateSurroundingCenterPoints(center, polygonRadius, numPolygons) {
+function calculateSurroundingCenterPoints(center, polygonRadius, numPolygons, multiplier = 1) {
   const surroundingPoints = [];
   const arcLengthBetweenPoints = (2 * Math.PI) / numPolygons;
+
+  if ( ! doRadialOffset) {
+    multiplier = 1;
+  }
 
   // generate points around the circle and add them to the array
   for (let i = 0; i < numPolygons; i++) {
     const currentTheta = radialOffset + i * arcLengthBetweenPoints;
-    let currentX = getCircleX(center[0], polygonRadius, currentTheta);
-    let currentY = getCircleY(center[1], polygonRadius, currentTheta);
+    let currentX = getCircleX(center[0], polygonRadius, currentTheta * multiplier);
+    let currentY = getCircleY(center[1], polygonRadius, currentTheta * multiplier);
     surroundingPoints.push([currentX, currentY]);
   }
 
@@ -62,6 +67,96 @@ function drawEllipse(centerX, centerY, radiusX, radiusY) {
   ctx.stroke();
 }
 
+
+// Animate increasing the amount of circles from 2 to 500, then back to 2
+function circleAnimation() {
+  const recursionLevel = 1;
+  const radius = 200;
+  const circles = true;
+
+  const minCircles = 25;
+  const maxCircles = 200;
+  let numCircles = minCircles;
+  let deltaCircleCount = 1;
+
+  circleAnimationStep();
+
+  function circleAnimationStep() {
+    doRender(recursionLevel, radius, numCircles, null, circles);
+
+    numCircles += deltaCircleCount;
+
+    if (numCircles === maxCircles) {
+      deltaCircleCount = -1;
+    } else if (numCircles === minCircles) {
+      deltaCircleCount = 1;
+    }
+
+    window.requestAnimationFrame(circleAnimationStep);
+  }
+}
+
+// circleAnimation();
+
+
+// Animate changing the global angle offset
+function figureSpin() {
+  doRadialOffset = true;
+  spinAnimationStep();
+
+  function spinAnimationStep() {
+    radialOffset += Math.PI / 1024;
+
+    const savedState = JSON.parse(localStorage.getItem('geomRenderState'));
+    doRender(
+      savedState.numLayers,
+      savedState.shapeRadius,
+      savedState.numShapes,
+      savedState.numSides,
+      savedState.circles
+    );
+
+    window.requestAnimationFrame(spinAnimationStep);
+  }
+}
+
+// figureSpin();
+
+
+function increaseSides() {
+  const maxNumSides = 50;
+  const minNumSides = 3;
+
+  let numSides = minNumSides;
+  let deltaNumSides = 1;
+
+  increaseAnimationStep();
+
+  function increaseAnimationStep() {
+    const savedState = JSON.parse(localStorage.getItem('geomRenderState'));
+    doRender(
+      savedState.numLayers,
+      savedState.shapeRadius,
+      savedState.numShapes,
+      numSides,
+      savedState.circles
+    );
+
+    numSides += deltaNumSides;
+
+    if (numSides === maxNumSides) {
+      deltaNumSides = -1;
+    } else if (numSides === minNumSides) {
+      deltaNumSides = 1;
+    }
+
+    window.setTimeout(increaseAnimationStep, 50 + (200 / numSides));
+  }
+}
+
+// increaseSides();
+
+
 function doRender(numLayers, shapeRadius, numShapes, numSides, circles = false) {
   // resize canvas to match shape size
   ctx.canvas.width = shapeRadius * 4;
@@ -83,7 +178,7 @@ function renderShapes(numLayers, shapeCenter, shapeRadius, numShapes, numSides, 
 
   // calculate center points for each polygon
   const centerPoint = shapeCenter;
-  const polygonCenters = calculateSurroundingCenterPoints(centerPoint, shapeRadius, numShapes);
+  const polygonCenters = calculateSurroundingCenterPoints(centerPoint, shapeRadius, numShapes, numLayers);
 
   // draw a polygon at each center point
   for(let i = 0; i < polygonCenters.length; i++) {
