@@ -62,20 +62,30 @@ function drawEllipse(centerX, centerY, radiusX, radiusY) {
   ctx.stroke();
 }
 
-function renderShapes(shapeRadius, numShapes, numSides, circles = false) {
+function doRender(numLayers, shapeRadius, numShapes, numSides, circles = false) {
   // clear canvas for new drawing
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // calculate center points for each polygon
-  const centerPoint = [2 * shapeRadius, 2 * shapeRadius];
-  const polygonCenters = calculateSurroundingCenterPoints(centerPoint, shapeRadius, numShapes);
+  // initially, center drawing in canvas
+  const initialCenter = [shapeRadius * 2, shapeRadius * 2];
+  renderShapes(numLayers, initialCenter, shapeRadius, numShapes, numSides, circles);
+}
 
-  // polygonCenters.push(centerPoint);
+function renderShapes(numLayers, shapeCenter, shapeRadius, numShapes, numSides, circles) {
+  // recursive base case
+  if (numLayers <= 0) {
+    return;
+  }
+
+  // calculate center points for each polygon
+  const centerPoint = shapeCenter;
+  const polygonCenters = calculateSurroundingCenterPoints(centerPoint, shapeRadius, numShapes);
 
   // draw a polygon at each center point
   for(let i = 0; i < polygonCenters.length; i++) {
     const polygonPoint = polygonCenters[i];
 
+    // draw center points for testing
     // ctx.fillRect(polygonPoint[0], polygonPoint[1], 2, 2);
 
     if (circles) {
@@ -83,5 +93,11 @@ function renderShapes(shapeRadius, numShapes, numSides, circles = false) {
     } else {
       drawPolygon(polygonPoint[0], polygonPoint[1], shapeRadius, numSides);
     }
+
+    // calculate next recursive generation
+    const newRadius = shapeRadius / 2;
+    const newCenter = polygonPoint;
+
+    renderShapes(numLayers - 1, newCenter, newRadius, numShapes, numSides, circles);
   }
 }
