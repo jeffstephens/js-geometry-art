@@ -61,7 +61,7 @@ function getColor(seed) {
 }
 
 // construct a shape by drawing lines between numSides points
-function drawPolygon(centerX, centerY, radius, numSides, level) {
+function drawPolygon(centerX, centerY, radius, numSides, level, colors = false) {
   ctx.fillStyle = 'black';
   ctx.beginPath();
 
@@ -79,8 +79,10 @@ function drawPolygon(centerX, centerY, radius, numSides, level) {
 
   ctx.closePath();
 
-  // ctx.fillStyle = getColor(level);
-  // ctx.fill();
+  if (colors) {
+    ctx.fillStyle = getColor(level);
+    ctx.fill();
+  }
 
   ctx.stroke();
 }
@@ -187,7 +189,7 @@ function increaseSides() {
 // increaseSides();
 
 
-function doRender(numLayers, shapeRadius, numShapes, numSides, circles = false) {
+function doRender(numLayers, shapeRadius, numShapes, numSides, circles = false, colors = false) {
   // resize canvas to match shape size
   ctx.canvas.width = shapeRadius * 4;
   ctx.canvas.height = shapeRadius * 4;
@@ -197,10 +199,10 @@ function doRender(numLayers, shapeRadius, numShapes, numSides, circles = false) 
 
   // initially, center drawing in canvas
   const initialCenter = [shapeRadius * 2, shapeRadius * 2];
-  renderShapes(numLayers, initialCenter, shapeRadius, numShapes, numSides, circles);
+  renderShapes(numLayers, initialCenter, shapeRadius, numShapes, numSides, circles, colors);
 }
 
-function renderShapes(numLayers, shapeCenter, shapeRadius, numShapes, numSides, circles) {
+function renderShapes(numLayers, shapeCenter, shapeRadius, numShapes, numSides, circles, colors) {
   // recursive base case
   if (numLayers <= 0) {
     return;
@@ -223,13 +225,13 @@ function renderShapes(numLayers, shapeCenter, shapeRadius, numShapes, numSides, 
     if (circles) {
       drawEllipse(polygonPoint[0], polygonPoint[1], shapeRadius, shapeRadius, numLayers);
     } else {
-      drawPolygon(polygonPoint[0], polygonPoint[1], shapeRadius, numSides, numLayers);
+      drawPolygon(polygonPoint[0], polygonPoint[1], shapeRadius, numSides, numLayers, colors);
     }
 
     // calculate next recursive generation
     const newRadius = shapeRadius / 2;
     const newCenter = polygonPoint;
 
-    renderShapes(numLayers - 1, newCenter, newRadius, numShapes, numSides, circles);
+    renderShapes(numLayers - 1, newCenter, newRadius, numShapes, numSides, circles, colors);
   }
 }

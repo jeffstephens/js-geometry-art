@@ -11,7 +11,8 @@ function render() {
     numLayers: $("#numLayers").val(),
     numShapes: $("#numShapes").val(),
     numSides: $("#numSides").val(),
-    circles: $("#circles").is(":checked")
+    circles: $("#circles").is(":checked"),
+    colors: $("#colors").is(":checked")
   };
 
   if (renderState.circles) {
@@ -25,7 +26,8 @@ function render() {
     renderState.shapeRadius,
     renderState.numShapes,
     renderState.numSides,
-    renderState.circles
+    renderState.circles,
+    renderState.colors
   );
 
   saveState(renderState);
