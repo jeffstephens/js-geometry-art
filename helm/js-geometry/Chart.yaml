@@ -1,0 +1,8 @@
+name: jeffpi.com
+version: 1.0.0
+description: A simple PHP-based website documenting my Raspberry Pi projects.
+home: https://jeffpi.com/
+maintainers:
+  - name: Jeff Stephens
+    email: jeff@jeffastephens.com
+engine: gotpl

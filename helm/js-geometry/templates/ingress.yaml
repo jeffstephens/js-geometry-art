@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Values.Name }}
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: js-geometry.jeffpi.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ .Values.Name }}
+          servicePort: 80
